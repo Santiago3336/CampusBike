@@ -89,7 +89,7 @@ FROM spare_parts;
 DELETE FROM spare_parts
 WHERE id = 1;
 
-/**/
+/* Caso de uso 4 */
 
 
 SELECT id, full_name, email
@@ -105,7 +105,7 @@ FROM sales_details sd
 JOIN bicycles b ON sd.bicycle_id = b.id
 WHERE sd.sale_id = 1;
 
-/*  */
+/* Caso de uso 5 */
 
 SELECT id, name
 FROM suppliers;
@@ -229,3 +229,74 @@ ORDER BY
 
 /* Caso de uso 11 */
 
+SELECT
+    ci.id AS city_id,
+    ci.name AS city_name,
+    COUNT(s.id) AS total_sales
+FROM
+    cities ci
+JOIN
+    customers cu ON ci.id = cu.city_id
+JOIN
+    sales s ON cu.id = s.customer_id
+GROUP BY
+    ci.id, ci.name
+ORDER BY
+    total_sales DESC;
+
+
+/* Caso de uso 12 */
+
+SELECT
+    co.id AS country_id,
+    co.name AS country_name,
+    s.id AS supplier_id,
+    s.name AS supplier_name
+FROM
+    countries co
+JOIN
+    cities ci ON co.id = ci.country_id
+JOIN
+    suppliers s ON ci.id = s.city_id
+ORDER BY
+    co.name, s.name;
+
+
+/* Caso de uso 13 */
+
+SELECT
+    s.id AS supplier_id,
+    s.name AS supplier_name,
+    SUM(pd.quantity) AS total_spare_parts_purchased
+FROM
+    suppliers s
+JOIN
+    spare_parts sp ON s.id = sp.supplier_id
+JOIN
+    purchase_details pd ON sp.id = pd.spare_part_id
+GROUP BY
+    s.id, s.name
+ORDER BY
+    total_spare_parts_purchased DESC;
+
+
+/* Caso de uso 14 */
+
+
+SET @start_date = '2023-01-01';
+SET @end_date = '2023-12-31';
+
+SELECT
+    c.id AS customer_id,
+    c.full_name AS customer_name,
+    COUNT(s.id) AS total_sales
+FROM
+    customers c
+JOIN
+    sales s ON c.id = s.customer_id
+WHERE
+    s.sale_date BETWEEN @start_date AND @end_date
+GROUP BY
+    c.id, c.full_name
+ORDER BY
+    total_sales DESC;
