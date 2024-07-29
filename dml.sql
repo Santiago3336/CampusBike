@@ -19,7 +19,6 @@ WHERE id = 1;
 /* CASO DE USO 2 */
 
 
-/*Se selecciona el usuario*/
 SELECT id, full_name, email
 FROM customers;
 
@@ -226,7 +225,7 @@ GROUP BY
 ORDER BY
     total_sales DESC;
 
-
+/* Casos de uso con JOINS*/
 /* Caso de uso 11 */
 
 SELECT
